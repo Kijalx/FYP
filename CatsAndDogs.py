@@ -1,11 +1,10 @@
 import itertools
-
+from keras import layers, models, optimizers, callbacks
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 import matplotlib.pyplot as plt
-import os
 from sklearn.metrics import confusion_matrix, classification_report
 
 image_size = (180, 180)
@@ -93,8 +92,12 @@ model = make_model(input_shape=image_size + (3,), num_classes=2)
 keras.utils.plot_model(model, show_shapes=True)
 
 
-epochs = 5
-callbacks = [keras.callbacks.ModelCheckpoint("../other/save_at_5.keras")]
+epochs = 100
+callbacks = callbacks.EarlyStopping(
+    monitor='val_loss',
+    patience=4,
+    restore_best_weights=True
+)
 
 model.compile(
     optimizer=keras.optimizers.Adam(1e-3),
