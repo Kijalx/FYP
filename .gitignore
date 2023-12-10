@@ -1,5 +1,4 @@
 pictures
-*.png
 *.keras
 *.h5
 PetImages
