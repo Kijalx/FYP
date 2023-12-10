@@ -1,6 +1,7 @@
 pictures
 *.keras
 *.h5
+*.png
 PetImages
 test
 /PetImages/
