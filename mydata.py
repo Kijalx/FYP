@@ -7,6 +7,7 @@ from tensorflow.keras import layers
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix, classification_report
 import os
+#CODE GOTTEN FROM KERAS.IO https://keras.io/examples/vision/image_classification_from_scratch/
 '''
 num_skipped = 0
 for folder_name in ("Cat", "Dog"):
@@ -30,7 +31,7 @@ image_size = (180, 180)
 batch_size = 64
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
-    "PetImages",
+    "pictures",
     validation_split=0.2,
     subset="both",
     seed=1337,
@@ -110,7 +111,7 @@ def make_model(input_shape, num_classes):
 model = make_model(input_shape=image_size + (3,), num_classes=2)
 keras.utils.plot_model(model, show_shapes=True)
 
-
+'''
 epochs = 100
 callbacks = callbacks.EarlyStopping(
     monitor='val_loss',
@@ -120,7 +121,7 @@ callbacks = callbacks.EarlyStopping(
 
 model.compile(
     optimizer=keras.optimizers.Adam(1e-3),
-    loss="binary_crossentropy",
+    loss="categorical_crossentropy",
     metrics=["accuracy"],
 )
 
@@ -130,8 +131,9 @@ history = model.fit(
     callbacks=callbacks,
     validation_data=val_ds,
 )
-model.save('model.keras')
-
+model.save('model2.keras')
+'''
+model = keras.models.load_model('model.keras')
 y_true = []
 y_pred_probs = []
 
@@ -170,7 +172,7 @@ img = keras.utils.load_img(
 plt.imshow(img)
 
 img_array = keras.utils.img_to_array(img)
-img_array = tf.expand_dims(img_array, 0)
+img_array = tf.expand_dims(img_array, 0)  # Create batch axis
 
 predictions = model.predict(img_array)
 score = float(predictions[0])
