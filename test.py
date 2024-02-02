@@ -1,58 +1,52 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, classification_report
+import itertools
+import keras
 import tensorflow as tf
-from matplotlib import pyplot as plt
-from tensorflow import keras
-import os
 
-model = keras.models.load_model('model.keras')
-folder_path = r"C:\Users\aleks\PycharmProjects\scientificProject4\test"
+model = keras.models.load_model('image.keras')
 
-class_labels = ['dog', 'cat']
-threshold = 0.8
+y_true = []
+y_pred_probs = []
 image_size = (180, 180)
-
-predicted_covid = []
-predicted_normal = []
-unrecognized = []
-
-for filename in os.listdir(folder_path):
-    if filename.lower().endswith(('.jpg', '.jpeg', '.png')):
-        img_path = os.path.join(folder_path, filename)
-
-        img = keras.utils.load_img(img_path, target_size=(180, 180))
-        img_array = keras.utils.img_to_array(img)
-        img_array = tf.expand_dims(img_array, 0)
-
-        predictions = model.predict(img_array)
-        confidence = predictions[0, 0]
-
-        if confidence > threshold:
-            predicted_covid.append((filename, confidence))
-        else:
-            if 1 - confidence > threshold:
-                predicted_normal.append((filename, 1 - confidence))
-            else:
-                unrecognized.append((filename, confidence))
-
-def display_results(category, results):
-    print(f"**Predicted {category.capitalize()}:**\n")
-    print("| Image      | Confidence |")
-    print("|------------|------------|")
-    for result in results:
-        print(f"| {result[0]:<10} | {100 * result[1]:.2f}%       |")
-    print("\n")
-
-display_results("dog", predicted_covid)
-display_results("cat", predicted_normal)
-display_results("unrecognized", unrecognized)
-
-img = keras.utils.load_img(
-    "test/monkey.jpg", target_size=image_size
+batch_size = 64
+val_ds = tf.keras.utils.image_dataset_from_directory(
+    "preprocessed_images",
+    validation_split=0.9,
+    subset="validation",
+    seed=1337,
+    image_size=image_size,
+    batch_size=batch_size,
 )
-plt.imshow(img)
 
-img_array = keras.utils.img_to_array(img)
-img_array = tf.expand_dims(img_array, 0)
+for images, labels in val_ds:
+    y_true.extend(labels.numpy())
+    y_pred_probs.extend(model.predict(images).argmax(axis=1))
 
-predictions = model.predict(img_array)
-score = float(predictions[0])
-print(f"This image is {100 * (1 - score):.2f}% cat and {100 * score:.2f}% dog.")
+y_pred = np.array(y_pred_probs)
+
+classes = ["2COVID", "3CAP", "adenocarcinoma", "CT_HEALTHY", "glioma_tumor",
+           "large_cell_carcinoma", "meningioma_tumor", "MRI_HEALTHY",
+           "NORMAL", "pituitary_tumor", "PNEUMONIA", "squamous_cell", "tumor"]
+
+cm = confusion_matrix(y_true, y_pred)
+
+plt.figure(figsize=(10, 10))
+plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+plt.title('Confusion matrix')
+plt.colorbar()
+tick_marks = np.arange(len(classes))
+plt.xticks(tick_marks, classes, rotation=45)
+plt.yticks(tick_marks, classes)
+
+thresh = cm.max() / 2.
+for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+    plt.text(j, i, f"{cm[i, j]}", horizontalalignment="center", color="white" if cm[i, j] > thresh else "black")
+
+plt.tight_layout()
+plt.ylabel('True label')
+plt.xlabel('Predicted label')
+plt.show()
+
+print("Classification Report:\n", classification_report(y_true, y_pred, target_names=classes))
