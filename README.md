@@ -6,6 +6,7 @@ This project implements a categorical classification model using Python. The mod
 
 ## Installation
 Ensure newest version of python and pip are installed previous to these steps
+DATA - https://mega.nz/file/lmtDUJSC#ZiSfkXQ2Q96qCkk76Ed1vzOEO9u11wHiDUYT0mpcuo0
 1. Clone the repository:
 
     ```bash
