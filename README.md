@@ -48,6 +48,10 @@ Ensure newest version of python and pip are installed previous to these steps
 
 - Aleks Kijewski
 
+'''
+pip install -r requirements.txt
+'''
+
 ![Alt text](./model.png)
 
 ![Alt text](./myplot.png)
