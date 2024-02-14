@@ -3,7 +3,9 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/PetImages" />
+      <excludeFolder url="file://$MODULE_DIR$/Split" />
       <excludeFolder url="file://$MODULE_DIR$/Working images" />
+      <excludeFolder url="file://$MODULE_DIR$/WorkingCode" />
       <excludeFolder url="file://$MODULE_DIR$/data" />
       <excludeFolder url="file://$MODULE_DIR$/pictures" />
       <excludeFolder url="file://$MODULE_DIR$/preprocessed_images" />
