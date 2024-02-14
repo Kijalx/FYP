@@ -2,7 +2,13 @@ pictures
 *.keras
 *.h5
 *.png
+*.jpg
+*.jpeg
 PetImages
 test
 /PetImages/
 preprocessed_images
+Working images
+Split
+working
+node_modules

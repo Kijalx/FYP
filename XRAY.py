@@ -7,7 +7,7 @@ image_size = (180, 180)
 batch_size = 64
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
-    "preprocessed_images",
+    "Split/Xray",
     validation_split=0.2,
     subset="both",
     seed=1337,
@@ -59,7 +59,7 @@ def make_model(input_shape, num_classes):
     return keras.Model(inputs, outputs)
 
 
-model = make_model(input_shape=image_size + (3,), num_classes=13)
+model = make_model(input_shape=image_size + (3,), num_classes=2)
 keras.utils.plot_model(model, show_shapes=True)
 
 
@@ -67,12 +67,12 @@ epochs = 100
 
 callbacks = callbacks.EarlyStopping(
     monitor='val_loss',
-    patience=4,
+    patience=9,
     restore_best_weights=True
 )
 model.compile(
     optimizer=keras.optimizers.Adam(1e-3),
-    loss= "sparse_categorical_crossentropy",
+    loss= "binary_crossentropy",
     metrics=["accuracy"],
 )
 model.fit(

@@ -4,11 +4,12 @@ from keras.utils import load_img, img_to_array
 
 model = keras.models.load_model('image.keras')
 img_size = (180, 180)
-img = load_img("pictures/2COVID/13_Bjorke_1.png", target_size=img_size)
+img = load_img("pictures/CT_HEALTHY/10.png", target_size=img_size)
 img_array = img_to_array(img)
 img_array = tf.expand_dims(img_array, 0)
 
 predictions = model.predict(img_array)
+print(predictions)
 prediction_for_first_image = predictions[0]
 
 predicted_class = tf.argmax(prediction_for_first_image)
