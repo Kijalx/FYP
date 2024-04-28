@@ -5,14 +5,14 @@ import itertools
 import keras
 import tensorflow as tf
 
-model = keras.models.load_model('../image.keras')
+model = keras.models.load_model('./Working images/xrayImage.keras')
 
 y_true = []
 y_pred_probs = []
 image_size = (180, 180)
 batch_size = 64
 val_ds = tf.keras.utils.image_dataset_from_directory(
-    "../Split/all",
+    "./Split/Xray",
     validation_split=0.9,
     subset="validation",
     seed=1337,
@@ -26,7 +26,7 @@ for images, labels in val_ds:
 
 y_pred = np.array(y_pred_probs)
 
-classes = ["CT", "MRII", "Xray"]
+classes = ["NORMAL", "PNEUMONIA"]
 
 cm = confusion_matrix(y_true, y_pred)
 

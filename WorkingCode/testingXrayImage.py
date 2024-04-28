@@ -11,7 +11,7 @@ batch_size = 64
 model = keras.models.load_model('../Working images/xrayImage.keras')
 
 train_ds, val_ds = tf.keras.utils.image_dataset_from_directory(
-    "Split/Xray",
+    "../Split/Xray",
     validation_split=0.2,
     subset="both",
     seed=1337,
