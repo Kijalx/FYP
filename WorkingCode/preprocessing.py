@@ -12,6 +12,7 @@ def load_and_preprocess_image(file_path, target_size=(180, 180)):
         print(f"Error loading image: {e}")
         return None
 
+
 output_folder = "preprocessed_images"
 
 if not os.path.exists(output_folder):
